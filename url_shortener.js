@@ -6,7 +6,8 @@ const express            = require('express'),
       shortenerUrlSchema = require('./db/schemas/shorter_url.schema');
       
 const utils = new Utils();
-const urlFormat = /(http[s]?:\/\/)?((www\.)[a-zA-Z]+(\.[a-z]{2,3}\/?)$)|((http[s]?:\/\/)?([a-zA-Z]+)(\.[a-z]{2,3}\/?)$)|((http[s]?:\/\/)?(www\.)?([a-zA-Z]+)(\.[a-z]{2,3}\/?)(\/[a-z]+\/?)+$)/
+// const urlFormat = /(http[s]?:\/\/)?((www\.)[a-zA-Z]+(\.[a-z]{2,3}\/?)$)|((http[s]?:\/\/)?([a-zA-Z]+)(\.[a-z]{2,3}\/?)$)|((http[s]?:\/\/)?(www\.)?([a-zA-Z]+)(\.[a-z]{2,3}\/?)(\/[a-z]+\/?)+$)/
+const urlFormat = /http[s]?:\/\/www\.[a-zA-Z]+\.[a-z]{3}$/
 
 const UrlShortener = mongoose.model( 'UrlShortener', shortenerUrlSchema );
 
@@ -18,22 +19,22 @@ urlShortener.get('/', (req, res) => {
     res.send('in url shortener');
 })
 
-urlShortener.post('/new', (req, res) => {
+urlShortener.post('/', (req, res) => {
     let url = req.body.url;
     let result = urlFormat.test(req.body.url);
     if ( result ) {
         console.log('url format test is passed');
         let shortUrl = utils.createShortUrl(req.body.url);
-        let urlShortener = new UrlShortener({ short_url : shortUrl, original_url: url });
+        let urlShortener = new UrlShortener({ original_url: url, short_url : shortUrl});
 
         urlShortener.save((err) => {
             if (err) return console.error(err);
             console.log(`${shortUrl} saved at UrlShortener model`);
         });
-        res.json(shortUrl);
+        res.json({ original_url : `${url}`, short_url : shortUrl });
     } else {
         console.log('url format test is failed');
-        res.json({ error: 'Invalid url format' });
+        res.json({ error: 'invalid url' });
     }
 })
 
