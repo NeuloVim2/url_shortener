@@ -1,5 +1,4 @@
-const urlShortener = require('./url_shortener'),
-      db           = require('./db/mongoose');
+const urlShortener = require('./url_shortener');
 
 require('dotenv').config();
 const express = require('express'),

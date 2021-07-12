@@ -6,7 +6,7 @@ const express            = require('express'),
       shortenerUrlSchema = require('./db/schemas/shorter_url.schema');
       
 const utils = new Utils();
-const urlFormat = /(http[s]?:\/\/)?((www\.)[a-zA-Z]+(\.[a-z]{2,3})$)|((http[s]?:\/\/)?([a-zA-Z]+)(\.[a-z]{2,3})$)/
+const urlFormat = /(http[s]?:\/\/)?((www\.)[a-zA-Z]+(\.[a-z]{2,3}\/?)$)|((http[s]?:\/\/)?([a-zA-Z]+)(\.[a-z]{2,3}\/?)$)|((http[s]?:\/\/)?(www\.)?([a-zA-Z]+)(\.[a-z]{2,3}\/?)(\/[a-z]+\/?)+$)/
 
 const UrlShortener = mongoose.model( 'UrlShortener', shortenerUrlSchema );
 
@@ -40,7 +40,7 @@ urlShortener.post('/new', (req, res) => {
 urlShortener.get('/:short_url', (req, res) => {
     let shortUrl = req.params.short_url;
     console.log(shortUrl);
-    UrlShortener.findOne({shortUrl: shortUrl})
+    UrlShortener.findOne({short_url: shortUrl})
                 .then((doc) => {
                     console.log(doc.original_url);
                     res.redirect(doc.original_url);
