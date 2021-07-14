@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const uri = 'mongodb+srv://user1:sfIfe231CK@cluster0.bghm0.mongodb.net/url_shortener?retryWrites=true&w=majority';
 
 // Connect mongoose to MongoDB database
