@@ -7,7 +7,4 @@ const shorterUrlSchema = new Schema({
     short_url: Number
 })
 
-// initiating a model
-let UrlShortener = mongoose.model("UrlShortener",shorterUrlSchema);
-
-module.exports = UrlShortener;
+module.exports = shorterUrlSchema;

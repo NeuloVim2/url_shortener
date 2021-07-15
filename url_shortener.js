@@ -1,10 +1,13 @@
 const express = require("express"),
   bodyParser = require("body-parser"),
   urlShortener = express.Router(),
-  UrlShortener = require("./db/schemas/shorter_url.schema");
+  mongoose = require("./db/mongoose"),
+  shortenerUrlSchema = require("./db/schemas/shorter_url.schema");
 
 // const urlFormat = /(http[s]?:\/\/)?((www\.)[a-zA-Z]+(\.[a-z]{2,3}\/?)$)|((http[s]?:\/\/)?([a-zA-Z]+)(\.[a-z]{2,3}\/?)$)|((http[s]?:\/\/)?(www\.)?([a-zA-Z]+)(\.[a-z]{2,3}\/?)(\/[a-z]+\/?)+$)/
 const urlFormat = /http[s]?:\/\/www\.[a-zA-Z]+\.[a-z]{3}$/;
+
+const UrlShortener = mongoose.model("UrlShortener", shortenerUrlSchema);
 
 // Connect body parser
 urlShortener.use(bodyParser.urlencoded({ extended: true }));
